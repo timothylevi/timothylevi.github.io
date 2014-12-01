@@ -80,6 +80,7 @@ main {
 
 main > p {
 	margin-bottom: 1em;
+	line-height: 1.1em;
 }
 
 main > p.focus {
