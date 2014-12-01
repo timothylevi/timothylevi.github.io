@@ -1,0 +1,98 @@
+html {
+	min-height: 100%;
+	margin-left: 1px;
+	border-left: 0.5em solid #ffa875;
+}
+
+body, header, h1, h2, h3, address, section, ul, li, p, a, main {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	font-family: 'Helvetica Neue', Helvetica, Segoe, 'Segoe UI', 'Segoe WP', Calibri, Arial, clean, sans-serif;;
+	font-size: inherit;
+	font-style: normal;
+	text-decoration: none;
+	color: black;
+	list-style: none;
+}
+
+a {
+	color: #ffa875;
+}
+
+a:active {
+	color: #555555;
+}
+
+a:hover {
+	color: #e0895a;
+}
+
+::-moz-selection {
+	background-color: #ffece0;
+	color: #555555;
+}
+::selection {
+	background-color: #ffece0;
+	color: #555555;
+}
+
+body {
+	max-width: 600px;
+	margin: 5em;
+}
+
+header > span.name {
+	display: inline-block;
+	font-size: 3em;
+	text-transform: uppercase;
+	color: #ffa875;
+	padding-left: 0;
+	font-weight: 100;
+	letter-spacing: 0.25em;
+	line-height: 0.9em;
+}
+
+header > span.name > strong {
+	font-weight: 300;
+}
+
+nav {
+	margin-top: 1em;
+	font-size: 1.25em;
+	text-transform: lowercase;
+	font-weight: 100;
+}
+
+nav > ul {
+}
+
+nav > ul > li {
+	display: inline-block;
+	margin-right: 0.75em;
+}
+
+main {
+	margin-top: 3em;
+	font-weight: 300;
+	color: #555555;
+}
+
+main > p {
+	margin-bottom: 1em;
+}
+
+main > p.focus {
+	border-left: 1px solid #ffa875;
+	padding-left: 1em;
+}
+
+span.parentheses:before {
+	content: "(";
+	padding-right: 0.3em;
+}
+
+span.parentheses:after {
+	content: ")";
+	padding-left: 0.3em;
+}
