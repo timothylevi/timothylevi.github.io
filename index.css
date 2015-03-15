@@ -16,6 +16,13 @@ body, header, h1, h2, h3, address, section, ul, li, p, a, main {
 	list-style: none;
 }
 
+img {
+	width: 25%;
+	border-radius: 5%;
+	border: 1px solid #ffa875;
+	margin-bottom: 2em;
+}
+
 a {
 	color: #ffa875;
 }
