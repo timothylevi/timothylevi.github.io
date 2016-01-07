@@ -1,7 +1,5 @@
 html {
 	min-height: 100%;
-	margin-left: 1px;
-	border-left: 0.5em solid #ffa875;
 }
 
 body, header, h1, h2, h3, address, section, ul, li, p, a, main {
@@ -16,15 +14,20 @@ body, header, h1, h2, h3, address, section, ul, li, p, a, main {
 	list-style: none;
 }
 
-img {
-	width: 25%;
-	border-radius: 5%;
-	border: 1px solid #ffa875;
-	margin-bottom: 2em;
+body {
+	margin: 3rem;
+}
+
+h1 {
+	display: inline;
+}
+
+h2 {
+	display: none;
 }
 
 a {
-	color: #ffa875;
+	color: #515744;
 }
 
 a:active {
@@ -44,63 +47,83 @@ a:hover {
 	color: #555555;
 }
 
-body {
-	max-width: 600px;
-	margin: 5em;
+img {
+	width: 10rem;
+	border-radius: 50%;
+	border: 1px solid #515744;
+	display: inline-block;
+	vertical-align: middle;
 }
 
-header > span.name {
+.headline {
 	display: inline-block;
 	font-size: 3em;
 	text-transform: uppercase;
-	color: #ffa875;
+	color: #515744;
 	padding-left: 0;
 	font-weight: 100;
 	letter-spacing: 0.25em;
-	line-height: 0.9em;
+	line-height: 3rem;
+	width: 50rem;
+	vertical-align: middle;
+	margin-left: 2rem;
 }
 
-header > span.name > strong {
+.name {
 	font-weight: 300;
 }
 
 nav {
-	margin-top: 1em;
-	font-size: 1.25em;
-	text-transform: lowercase;
-	font-weight: 100;
+	margin-top: 0.5rem;
+	font-size: 1.15rem;
 }
 
-nav > ul {
+.social {
+	margin-left: 12.5rem;
 }
 
-nav > ul > li {
+.social li {
 	display: inline-block;
 	margin-right: 0.75em;
 }
 
-main {
-	margin-top: 3em;
-	font-weight: 300;
-	color: #555555;
+.social li .fa {
+	margin-right: 0.5rem;
 }
 
-main > p {
+main {
+	margin-top: 1rem;
+	font-weight: 300;
+	color: #555555;
+	margin-left: 12.5rem;
+	width: 40rem;
+}
+
+.about {
+	font-size: 1.5rem;
 	margin-bottom: 1em;
 	line-height: 1.1em;
 }
 
-main > p.focus {
-	border-left: 1px solid #ffa875;
-	padding-left: 1em;
+.experiences .exp {
+	margin-top: 1rem;
 }
 
-span.parentheses:before {
-	content: "(";
-	padding-right: 0.3em;
+.experiences .exp .exp-position {
+	font-weight: 500;
+	display: inline-block;
 }
 
-span.parentheses:after {
-	content: ")";
-	padding-left: 0.3em;
+.experiences .exp .exp-duration {
+	margin-left: 1rem;
+	color: #aaa;
+}
+
+.experiences .exp .exp-description {
+	margin: 0.5rem 0;
+}
+
+.experiences .exp .exp-highlight {
+	margin-left: 1rem;
+	margin-bottom: 0.5rem;
 }
