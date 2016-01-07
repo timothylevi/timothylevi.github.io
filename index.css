@@ -127,3 +127,62 @@ main {
 	margin-left: 1rem;
 	margin-bottom: 0.5rem;
 }
+
+@media (max-width: 1094px) {
+	.headline {
+		margin-left: 0;
+		margin-top: 1rem;
+	}
+
+	.social {
+		margin-left: 0rem;
+	}
+
+	main {
+		margin-left: 0;
+	}
+}
+
+@media (max-width: 700px) {
+	body {
+		margin: 2rem;
+	}
+
+	img {
+		margin: auto;
+		display: block;
+	}
+
+	.name {
+		display: block;
+	}
+
+	.headline {
+		text-align: center;
+		font-size: 1.5rem;
+		line-height: 1.5rem;
+		width: 100%;
+	}
+
+	.social {
+		text-align: center;
+	}
+
+	.social,
+	.about {
+		font-size: 1.25rem;
+		line-height: 1.25rem;
+		width: 100%;
+	}
+
+	main {
+		width: 100%;
+	}
+
+	.experiences .exp .exp-duration {
+		margin-left: 0;
+	}
+	.experiences .exp .exp-position {
+		display: block;
+	}
+}
