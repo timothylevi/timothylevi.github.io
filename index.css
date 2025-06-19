@@ -1,188 +1,120 @@
-html {
-	min-height: 100%;
+/* Fonts */
+.anonymous-pro-regular {
+  font-family: "Anonymous Pro", monospace;
+  font-weight: 400;
+  font-style: normal;
 }
 
-body, header, h1, h2, h3, address, section, ul, li, p, a, main {
-	padding: 0;
-	margin: 0;
-	border: 0;
-	font-family: 'Helvetica Neue', Helvetica, Segoe, 'Segoe UI', 'Segoe WP', Calibri, Arial, clean, sans-serif;;
-	font-size: inherit;
-	font-style: normal;
-	text-decoration: none;
-	color: black;
-	list-style: none;
+.anonymous-pro-bold {
+  font-family: "Anonymous Pro", monospace;
+  font-weight: 700;
+  font-style: normal;
 }
 
-body {
-	margin: 3rem;
+.anonymous-pro-regular-italic {
+  font-family: "Anonymous Pro", monospace;
+  font-weight: 400;
+  font-style: italic;
 }
 
-h1 {
-	display: inline;
+.anonymous-pro-bold-italic {
+  font-family: "Anonymous Pro", monospace;
+  font-weight: 700;
+  font-style: italic;
 }
 
-h2 {
-	display: none;
+.lora-regular {
+  font-family: "Lora", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
-a {
-	color: #515744;
+.helvetica-neue-regular {
+  font-family: "Helvetica Neue", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
-a:active {
-	color: #555555;
+.sour-gummy-regular {
+  font-family: "Sour Gummy", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
 }
 
-a:hover {
-	color: #e0895a;
+/* Utilities */
+.summary-no-marker::marker {
+  content: "";
 }
 
-::-moz-selection {
-	background-color: #ffece0;
-	color: #555555;
-}
-::selection {
-	background-color: #ffece0;
-	color: #555555;
+.summary-clickable {
+  cursor: pointer;
 }
 
-img {
-	width: 10rem;
-	border-radius: 50%;
-	border: 1px solid #515744;
-	display: inline-block;
-	vertical-align: middle;
+.summary-box {
+  padding-bottom: 1rem;
 }
 
-.headline {
-	display: inline-block;
-	font-size: 3em;
-	text-transform: uppercase;
-	color: #515744;
-	padding-left: 0;
-	font-weight: 100;
-	letter-spacing: 0.25em;
-	line-height: 3rem;
-	width: 50rem;
-	vertical-align: middle;
-	margin-left: 2rem;
+.header-aka {
+  font-size: 3rem;
 }
 
-.name {
-	font-weight: 300;
+.details-box {
+  margin-bottom: 1rem;
+  opacity: 0.5;
 }
 
-nav {
-	margin-top: 0.5rem;
-	font-size: 1.15rem;
+.details-box:hover {
+  margin-bottom: 1rem;
+  opacity: 1;
 }
 
-.social {
-	margin-left: 12.5rem;
+.details-box:open {
+  margin-bottom: 2rem;
+  opacity: 1;
 }
 
-.social li {
-	display: inline-block;
-	margin-right: 0.75em;
+.body-medium-width {
+  max-width: 15rem;
 }
 
-.social li .fa {
-	margin-right: 0.5rem;
+.body-content-centered {
+  margin: 0 auto;
 }
 
-main {
-	margin-top: 1rem;
-	font-weight: 300;
-	color: #555555;
-	margin-left: 12.5rem;
-	width: 40rem;
+.aka-label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  opacity: 0.25;
 }
 
-.about {
-	font-size: 1.5rem;
-	margin-bottom: 1em;
-	line-height: 1.1em;
+.details-box:open .aka-label {
+  opacity: 0.5;
 }
 
-.experiences .exp {
-	margin-top: 1rem;
+/* Nested */
+
+details:first-of-type summary .aka-label {
+  display: none;
 }
 
-.experiences .exp .exp-position {
-	font-weight: 500;
-	display: inline-block;
+html, body {
+    height: 100%;
 }
 
-.experiences .exp .exp-duration {
-	margin-left: 1rem;
-	color: #aaa;
+.main {
+    height: 100%;
+    width: 100%;
+    display: table;
 }
 
-.experiences .exp .exp-description {
-	margin: 0.5rem 0;
-}
-
-.experiences .exp .exp-highlight {
-	margin-left: 1rem;
-	margin-bottom: 0.5rem;
-}
-
-@media (max-width: 1094px) {
-	.headline {
-		margin-left: 0;
-		margin-top: 1rem;
-	}
-
-	.social {
-		margin-left: 0rem;
-	}
-
-	main {
-		margin-left: 0;
-	}
-}
-
-@media (max-width: 700px) {
-	body {
-		margin: 2rem;
-	}
-
-	img {
-		margin: auto;
-		display: block;
-	}
-
-	.name {
-		display: block;
-	}
-
-	.headline {
-		text-align: center;
-		font-size: 1.5rem;
-		line-height: 1.5rem;
-		width: 100%;
-	}
-
-	.social {
-		text-align: center;
-	}
-
-	.social,
-	.about {
-		font-size: 1.25rem;
-		line-height: 1.25rem;
-		width: 100%;
-	}
-
-	main {
-		width: 100%;
-	}
-
-	.experiences .exp .exp-duration {
-		margin-left: 0;
-	}
-	.experiences .exp .exp-position {
-		display: block;
-	}
+.wrapper {
+    display: table-cell;
+    height: 100%;
+    vertical-align: middle;
 }

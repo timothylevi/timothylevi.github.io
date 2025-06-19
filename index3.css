@@ -1,0 +1,188 @@
+html {
+	min-height: 100%;
+}
+
+body, header, h1, h2, h3, address, section, ul, li, p, a, main {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	font-family: 'Helvetica Neue', Helvetica, Segoe, 'Segoe UI', 'Segoe WP', Calibri, Arial, clean, sans-serif;;
+	font-size: inherit;
+	font-style: normal;
+	text-decoration: none;
+	color: black;
+	list-style: none;
+}
+
+body {
+	margin: 3rem;
+}
+
+h1 {
+	display: inline;
+}
+
+h2 {
+	display: none;
+}
+
+a {
+	color: #515744;
+}
+
+a:active {
+	color: #555555;
+}
+
+a:hover {
+	color: #e0895a;
+}
+
+::-moz-selection {
+	background-color: #ffece0;
+	color: #555555;
+}
+::selection {
+	background-color: #ffece0;
+	color: #555555;
+}
+
+img {
+	width: 10rem;
+	border-radius: 50%;
+	border: 1px solid #515744;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.headline {
+	display: inline-block;
+	font-size: 3em;
+	text-transform: uppercase;
+	color: #515744;
+	padding-left: 0;
+	font-weight: 100;
+	letter-spacing: 0.25em;
+	line-height: 3rem;
+	width: 50rem;
+	vertical-align: middle;
+	margin-left: 2rem;
+}
+
+.name {
+	font-weight: 300;
+}
+
+nav {
+	margin-top: 0.5rem;
+	font-size: 1.15rem;
+}
+
+.social {
+	margin-left: 12.5rem;
+}
+
+.social li {
+	display: inline-block;
+	margin-right: 0.75em;
+}
+
+.social li .fa {
+	margin-right: 0.5rem;
+}
+
+main {
+	margin-top: 1rem;
+	font-weight: 300;
+	color: #555555;
+	margin-left: 12.5rem;
+	width: 40rem;
+}
+
+.about {
+	font-size: 1.5rem;
+	margin-bottom: 1em;
+	line-height: 1.1em;
+}
+
+.experiences .exp {
+	margin-top: 1rem;
+}
+
+.experiences .exp .exp-position {
+	font-weight: 500;
+	display: inline-block;
+}
+
+.experiences .exp .exp-duration {
+	margin-left: 1rem;
+	color: #aaa;
+}
+
+.experiences .exp .exp-description {
+	margin: 0.5rem 0;
+}
+
+.experiences .exp .exp-highlight {
+	margin-left: 1rem;
+	margin-bottom: 0.5rem;
+}
+
+@media (max-width: 1094px) {
+	.headline {
+		margin-left: 0;
+		margin-top: 1rem;
+	}
+
+	.social {
+		margin-left: 0rem;
+	}
+
+	main {
+		margin-left: 0;
+	}
+}
+
+@media (max-width: 700px) {
+	body {
+		margin: 2rem;
+	}
+
+	img {
+		margin: auto;
+		display: block;
+	}
+
+	.name {
+		display: block;
+	}
+
+	.headline {
+		text-align: center;
+		font-size: 1.5rem;
+		line-height: 1.5rem;
+		width: 100%;
+	}
+
+	.social {
+		text-align: center;
+	}
+
+	.social,
+	.about {
+		font-size: 1.25rem;
+		line-height: 1.25rem;
+		width: 100%;
+	}
+
+	main {
+		width: 100%;
+	}
+
+	.experiences .exp .exp-duration {
+		margin-left: 0;
+	}
+	.experiences .exp .exp-position {
+		display: block;
+	}
+}
