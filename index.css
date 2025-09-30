@@ -66,10 +66,23 @@
 .details-box {
   margin-bottom: 1rem;
   opacity: 0.5;
+  transition: opacity 1s;
+  transition: color 1.5s;
+  transition: background-color 1.5s;
+  color: black;
+  padding: 1rem;
+  border-radius: 0.5rem;
 }
 
 .details-box:hover {
   margin-bottom: 1rem;
+  opacity: 1;
+}
+
+
+.details-box:focus,
+.details-box:focus-visible,
+.details-box:active {
   opacity: 1;
 }
 
@@ -95,6 +108,42 @@
 
 .details-box:open .aka-label {
   opacity: 0.5;
+}
+
+.details-tim {
+  border: 1px solid black;
+}
+
+.details-tim .summary-box {
+  padding: 0;
+}
+
+.details-tim:open {
+  color: #e0895a;
+  background: rgba(224, 137, 90, 0.2);
+  border: 1px solid #e0895a;
+}
+.details-timothy-levi:open {
+  color: #70762a;
+  background: rgba(112, 118, 42, 0.2);
+}
+.details-tim-campbell:open {
+  color: #656f86;
+  background: rgba(101, 111, 134, 0.2);
+}
+
+.details-chumpa-blivity:open {
+  color: #aa074e;
+  background: rgba(170, 7, 78, 0.2);
+}
+
+.p-title:last-child { margin-bottom: 0; }
+.p-title {
+  margin-bottom: 1rem;
+}
+
+a {
+  color: unset;
 }
 
 /* Nested */
