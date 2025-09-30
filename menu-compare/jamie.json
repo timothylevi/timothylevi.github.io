@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.2",
+  "last_update": "2025-09-30T12:05:00.000Z",
+  "people": ["Jamie"],
+  "menu": [
+    {
+      "name": "Communication",
+      "items": [
+        { "name": "Daily or frequent check ins", "icon": "maybe", "note": "Not every day" },
+        { "name": "Texting", "icon": "must", "note": null },
+        { "name": "Phone / video calls", "icon": "off-limit", "note": "I dislike long calls" },
+        { "name": "Discussing work and hobbies", "icon": "like", "note": null },
+        { "name": "Discussing family, partners, relationships", "icon": "like", "note": null }
+      ]
+    },
+    {
+      "name": "Quality Time",
+      "items": [
+        { "name": "Regularly scheduled time together", "icon": "like", "note": null },
+        { "name": "Date nights / outings", "icon": "must", "note": "Important to me weekly" },
+        { "name": "Vacations or excursions together", "icon": "must", "note": null }
+      ]
+    },
+    {
+      "name": "Physical Intimacy",
+      "items": [
+        { "name": "Hugging each other", "icon": "must", "note": null },
+        { "name": "Cuddling with each other", "icon": "like", "note": null },
+        { "name": "Kissing each other", "icon": "must", "note": null },
+        { "name": "Public displays of affection", "icon": "off-limit", "note": null }
+      ]
+    },
+    {
+      "name": "Open Relationships",
+      "items": [
+        { "name": "Relationship style preferences", "icon": "talk", "note": "Still figuring it out" },
+        { "name": "Dealing with jealousy", "icon": "talk", "note": null },
+        { "name": "Communication about other partners", "icon": "talk", "note": "Prefer high transparency" }
+      ]
+    }
+  ],
+  "uuid": "22222222-BBBB-2222-BBBB-222222222222",
+  "language": "en",
+  "template_uuid": "D3705BF9-0BA7-4145-BFC9-D0897FBB9AC9"
+}

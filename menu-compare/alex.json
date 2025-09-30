@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.2",
+  "last_update": "2025-09-30T12:00:00.000Z",
+  "people": ["Alex"],
+  "menu": [
+    {
+      "name": "Communication",
+      "items": [
+        { "name": "Daily or frequent check ins", "icon": "must", "note": "Helps me feel secure" },
+        { "name": "Texting", "icon": "off-limit", "note": null },
+        { "name": "Phone / video calls", "icon": "maybe", "note": null },
+        { "name": "Discussing work and hobbies", "icon": "must", "note": null },
+        { "name": "Discussing family, partners, relationships", "icon": "prefer-not", "note": null }
+      ]
+    },
+    {
+      "name": "Quality Time",
+      "items": [
+        { "name": "Regularly scheduled time together", "icon": "must", "note": null },
+        { "name": "Date nights / outings", "icon": "like", "note": null },
+        { "name": "Vacations or excursions together", "icon": "maybe", "note": "At least once a year" }
+      ]
+    },
+    {
+      "name": "Physical Intimacy",
+      "items": [
+        { "name": "Hugging each other", "icon": "must", "note": null },
+        { "name": "Cuddling with each other", "icon": "must", "note": null },
+        { "name": "Kissing each other", "icon": "must", "note": null },
+        { "name": "Public displays of affection", "icon": "maybe", "note": "Okay in private, less in public" }
+      ]
+    },
+    {
+      "name": "Open Relationships",
+      "items": [
+        { "name": "Relationship style preferences", "icon": "talk", "note": null },
+        { "name": "Dealing with jealousy", "icon": "talk", "note": "Would like to check in regularly" },
+        { "name": "Communication about other partners", "icon": "talk", "note": null }
+      ]
+    }
+  ],
+  "uuid": "11111111-AAAA-1111-AAAA-111111111111",
+  "language": "en",
+  "template_uuid": "D3705BF9-0BA7-4145-BFC9-D0897FBB9AC9"
+}

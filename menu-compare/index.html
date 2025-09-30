@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JSON Comparison Tool</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    h2 { margin-top: 2rem; }
+    .group { margin-bottom: 1rem; padding: 0; border-radius: 8px; background: #f9f9f9; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .group-header { padding: 0.5rem 1rem; cursor: pointer; font-weight: bold; background: #ddd; border-bottom: 1px solid #ccc; user-select: none; }
+    .items-container { display: none; } /* collapsed by default */
+    .header-row, .item { display: flex; justify-content: space-between; padding: 0.3rem 0.6rem; border-bottom: 1px solid #eee; }
+    .item:last-child { border-bottom: none; }
+    .same { background: #e6ffed; }
+    .low { background: #f0fff0; }
+    .medium { background: #fffbe6; }
+    .high { background: #ffecec; }
+    .note { font-style: italic; font-size: 0.9em; padding: 0.2rem 0.4rem; background: #fff3d9; border-radius: 4px; }
+    .value { width: 33%; }
+  </style>
+</head>
+<body>
+  <h1>JSON Comparison Tool</h1>
+  
+  <div>
+    <label>Person 1 Name: <input type="text" id="person1" placeholder="Alice"></label><br><br>
+    <label>File 1: <input type="file" id="file1"></label><br><br>
+
+    <label>Person 2 Name: <input type="text" id="person2" placeholder="Bob"></label><br><br>
+    <label>File 2: <input type="file" id="file2"></label><br><br>
+
+    <button id="compareBtn">Compare</button>
+  </div>
+
+  <h2>Same</h2>
+  <div id="same"></div>
+
+  <h2>Different</h2>
+  <div id="diff"></div>
+
+  <h2>Not Set / Missing</h2>
+  <div id="notSet"></div>
+
+  <script>
+    const file1Input = document.getElementById('file1');
+    const file2Input = document.getElementById('file2');
+    const sameEl = document.getElementById('same');
+    const diffEl = document.getElementById('diff');
+    const notSetEl = document.getElementById('notSet');
+    const person1Input = document.getElementById('person1');
+    const person2Input = document.getElementById('person2');
+
+    const order = ["must", "like", "maybe", "prefer-not", "off-limit", null];
+
+    function getDistance(val1, val2) {
+      const idx1 = order.indexOf(val1);
+      const idx2 = order.indexOf(val2);
+      return Math.abs(idx1 - idx2);
+    }
+
+    function bucketLevel(distance) {
+      if (distance === 1) return "low";
+      if (distance === 2 || distance === 3) return "medium";
+      return "high"; // 4 or 5
+    }
+
+    function readFile(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => resolve(JSON.parse(e.target.result));
+        reader.onerror = reject;
+        reader.readAsText(file);
+      });
+    }
+
+    function renderGroup(container, groupName, items, type, person1, person2) {
+      const groupDiv = document.createElement('div');
+      groupDiv.className = 'group';
+
+      const headerDiv = document.createElement('div');
+      headerDiv.className = 'group-header';
+      headerDiv.textContent = groupName + ` (${items.length} item${items.length > 1 ? 's' : ''})`;
+      groupDiv.appendChild(headerDiv);
+
+      const itemsContainer = document.createElement('div');
+      itemsContainer.className = 'items-container';
+
+      const headerRow = document.createElement('div');
+      headerRow.className = 'header-row';
+      headerRow.innerHTML = `
+        <div class="value">Item</div>
+        <div class="value">${person1}</div>
+        <div class="value">${person2}</div>
+        <div class="value">Notes</div>
+      `;
+      itemsContainer.appendChild(headerRow);
+
+      items.forEach(({ name, icon1, icon2, note1, note2 }) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = `item ${type}`;
+        const notesHTML = `
+          ${note1 ? `<div class="note">${person1}: ${note1}</div>` : `<div></div>`}
+          ${note2 ? `<div class="note">${person2}: ${note2}</div>` : `<div></div>`}
+        `;
+        itemDiv.innerHTML = `
+          <div class="value"><strong>${name}</strong></div>
+          <div class="value">${icon1 ?? ''}</div>
+          <div class="value">${icon2 ?? ''}</div>
+          <div class="value" style="display:flex;gap:0.5rem;">${notesHTML}</div>
+        `;
+        itemsContainer.appendChild(itemDiv);
+      });
+
+      groupDiv.appendChild(itemsContainer);
+      container.appendChild(groupDiv);
+
+      // Toggle collapse on header click
+      headerDiv.addEventListener('click', () => {
+        itemsContainer.style.display = itemsContainer.style.display === 'none' ? 'block' : 'none';
+      });
+    }
+
+    document.getElementById('compareBtn').addEventListener('click', async () => {
+      if (!file1Input.files[0] || !file2Input.files[0]) {
+        alert("Please select both files first.");
+        return;
+      }
+
+      const person1 = person1Input.value.trim() || "Person 1";
+      const person2 = person2Input.value.trim() || "Person 2";
+
+      const [json1, json2] = await Promise.all([
+        readFile(file1Input.files[0]),
+        readFile(file2Input.files[0])
+      ]);
+
+      sameEl.innerHTML = '';
+      diffEl.innerHTML = '';
+      notSetEl.innerHTML = '';
+
+      const menu1 = json1.menu || [];
+      const menu2 = json2.menu || [];
+
+      const diffBuckets = { low: {}, medium: {}, high: {} };
+      const missingBuckets = {};
+
+      menu1.forEach(group1 => {
+        const group2 = menu2.find(g => g.name === group1.name);
+        if (!group2) return;
+
+        const sameItems = [];
+        const missingItems = [];
+
+        group1.items.forEach(item1 => {
+          const item2 = group2.items.find(i => i.name === item1.name);
+          const note1 = item1.note;
+          const note2 = item2?.note;
+
+          if (item2) {
+            if (item1.icon === item2.icon) {
+              sameItems.push({ name: item1.name, icon1: item1.icon, icon2: item2.icon, note1, note2 });
+            } else if (item1.icon == null || item2.icon == null) {
+              missingItems.push({ name: item1.name, icon1: item1.icon, icon2: item2.icon, note1, note2 });
+            } else {
+              const distance = getDistance(item1.icon, item2.icon);
+              const bucket = bucketLevel(distance);
+              if (!diffBuckets[bucket][group1.name]) diffBuckets[bucket][group1.name] = [];
+              diffBuckets[bucket][group1.name].push({ name: item1.name, icon1: item1.icon, icon2: item2.icon, note1, note2 });
+            }
+          } else {
+            missingItems.push({ name: item1.name, icon1: item1.icon, icon2: null, note1, note2 });
+          }
+        });
+
+        if (sameItems.length) renderGroup(sameEl, group1.name, sameItems, 'same', person1, person2);
+        if (missingItems.length) renderGroup(notSetEl, group1.name, missingItems, 'medium', person1, person2);
+      });
+
+      ["low", "medium", "high"].forEach(level => {
+        const groups = diffBuckets[level];
+        if (Object.keys(groups).length > 0) {
+          const header = document.createElement('h3');
+          header.textContent = level.charAt(0).toUpperCase() + level.slice(1) + " Difference";
+          diffEl.appendChild(header);
+
+          Object.keys(groups).forEach(groupName => {
+            renderGroup(diffEl, groupName, groups[groupName], level, person1, person2);
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
