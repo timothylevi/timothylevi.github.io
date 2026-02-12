@@ -1,194 +1,587 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>JSON Comparison Tool</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 2rem; }
-    h2 { margin-top: 2rem; }
-    .group { margin-bottom: 1rem; padding: 0; border-radius: 8px; background: #f9f9f9; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-    .group-header { padding: 0.5rem 1rem; cursor: pointer; font-weight: bold; background: #ddd; border-bottom: 1px solid #ccc; user-select: none; }
-    .items-container { display: none; } /* collapsed by default */
-    .header-row, .item { display: flex; justify-content: space-between; padding: 0.3rem 0.6rem; border-bottom: 1px solid #eee; }
-    .item:last-child { border-bottom: none; }
-    .same { background: #e6ffed; }
-    .low { background: #f0fff0; }
-    .medium { background: #fffbe6; }
-    .high { background: #ffecec; }
-    .note { font-style: italic; font-size: 0.9em; padding: 0.2rem 0.4rem; background: #fff3d9; border-radius: 4px; }
-    .value { width: 33%; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+<title>JSON Comparison Tool</title>
+
+<style>
+/* =========================
+   Reset / Base Setup
+========================= */
+
+* {
+  box-sizing: border-box;
+}
+
+img,
+table {
+  max-width: 100%;
+}
+
+/* =========================
+   Design Tokens
+========================= */
+
+:root {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface-soft: #f3f4f7;
+  --border: #e6e8ef;
+
+  --text: #1f2430;
+  --text-muted: #6b7280;
+
+  --accent: #6366f1;
+
+  --same: #e9f9ee;
+  --low: #eefbf0;
+  --medium: #fff7db;
+  --high: #ffe9e9;
+}
+
+/* =========================
+   Typography + Body
+========================= */
+
+body {
+  font-family: "Manrope", system-ui, -apple-system, sans-serif;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+
+  background: var(--bg);
+  color: var(--text);
+
+  margin: clamp(1rem, 4vw, 2rem);
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+legend,
+summary {
+  font-family: "Outfit", system-ui, -apple-system, sans-serif;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin-bottom: 0;
+}
+
+h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+
+h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #444;
+  margin: 0;
+}
+
+legend {
+  font-weight: 600;
+}
+
+summary {
+  font-weight: 550;
+  cursor: pointer;
+}
+
+/* =========================
+   Layout
+========================= */
+
+header {
+  margin-bottom: 1rem;
+}
+
+section {
+  margin-top: 2.5rem;
+}
+
+label {
+  display: block;
+  margin-top: 0;
+}
+
+/* =========================
+   Surfaces
+========================= */
+
+form,
+details {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 4px 14px rgba(0,0,0,0.06);
+}
+
+form {
+  margin-bottom: 2rem;
+  padding: 1rem;
+}
+
+fieldset {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+details {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  transition: transform 120ms ease;
+}
+
+details:hover {
+  transform: translateY(-1px);
+}
+
+/* =========================
+   Inputs + Buttons
+========================= */
+
+input[type="text"],
+input[type="file"] {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 0.95rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.65rem 1.1rem;
+
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+
+  background: var(--accent);
+  color: white;
+
+  border: none;
+  border-radius: 10px;
+
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(99,102,241,0.25);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+#toggleDetails {
+  background-color: rgba(0, 0, 0, 0.3);
+  margin-top: 0;
+}
+
+/* =========================
+   Details / Summary UI
+========================= */
+
+summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::after {
+  content: "›";
+  font-size: 1.2rem;
+  transform: rotate(90deg);
+  transition: transform 150ms ease;
+}
+
+details[open] summary::after {
+  transform: rotate(-90deg);
+}
+
+/* =========================
+   Tables
+========================= */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+table th,
+table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+/* =========================
+   Status Colors
+========================= */
+
+.same { background: var(--same); }
+.low { background: var(--low); }
+.medium { background: var(--medium); }
+.high { background: var(--high); }
+
+/* =========================
+   Notes
+========================= */
+
+.note {
+  font-style: italic;
+  font-size: 0.9em;
+
+  background: rgba(255,255,255,0.75);
+  border-left: 3px solid rgba(0,0,0,0.25);
+
+  padding: 0.35rem 0.55rem;
+  border-radius: 6px;
+
+  color: var(--text-muted);
+  display: inline-block;
+  margin: 0.5rem 0;
+}
+
+/* =========================
+   Mobile (<= 600px)
+========================= */
+
+@media (max-width: 600px) {
+
+  body {
+    font-size: 16px;
+    margin: 1rem;
+  }
+
+  form,
+  fieldset {
+    padding: 0.75rem;
+  }
+
+  input,
+  button {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  button {
+    padding: 0.75rem;
+  }
+
+  summary {
+    padding: 0.75rem;
+    font-size: 1.05rem;
+  }
+
+  details {
+    padding: 0.25rem;
+  }
+
+  /* Table → Card Layout */
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+    background: white;
+  }
+
+  td,
+  th[scope="row"] {
+    display: block;
+    border: none;
+    padding: 0.25rem 0;
+  }
+
+  td::before {
+    font-weight: bold;
+    display: block;
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+}
+</style>
 </head>
+
 <body>
-  <h1>JSON Comparison Tool</h1>
-  
-  <div>
-    <label>Person 1 Name: <input type="text" id="person1" placeholder="Alice"></label><br><br>
-    <label>File 1: <input type="file" id="file1"></label><br><br>
 
-    <label>Person 2 Name: <input type="text" id="person2" placeholder="Bob"></label><br><br>
-    <label>File 2: <input type="file" id="file2"></label><br><br>
+<header>
+  <h1>Relationship menus</h1>
+</header>
 
-    <button id="compareBtn">Compare</button>
-  </div>
+<main>
 
-  <h2>Same</h2>
+<form id="compareForm">
+  <fieldset>
+    <legend>Person 1</legend>
+
+    <label for="person1">Name</label>
+    <input id="person1" type="text" placeholder="Alice">
+
+    <label for="file1">JSON File</label>
+    <input id="file1" type="file" accept="application/json" required>
+  </fieldset>
+
+  <fieldset>
+    <legend>Person 2</legend>
+
+    <label for="person2">Name</label>
+    <input id="person2" type="text" placeholder="Bob">
+
+    <label for="file2">JSON File</label>
+    <input id="file2" type="file" accept="application/json" required>
+  </fieldset>
+
+  <button type="submit">Compare</button>
+</form>
+
+<button id="toggleDetails">Expand All</button>
+
+<section aria-labelledby="same-heading">
+  <h2 id="same-heading">Same</h2>
   <div id="same"></div>
+</section>
 
-  <h2>Different</h2>
+<section aria-labelledby="diff-heading">
+  <h2 id="diff-heading">Different</h2>
   <div id="diff"></div>
+</section>
 
-  <h2>Not Set / Missing</h2>
+<section aria-labelledby="missing-heading">
+  <h2 id="missing-heading">Not Set / Missing</h2>
   <div id="notSet"></div>
+</section>
 
-  <script>
-    const file1Input = document.getElementById('file1');
-    const file2Input = document.getElementById('file2');
-    const sameEl = document.getElementById('same');
-    const diffEl = document.getElementById('diff');
-    const notSetEl = document.getElementById('notSet');
-    const person1Input = document.getElementById('person1');
-    const person2Input = document.getElementById('person2');
+</main>
 
-    const order = ["must", "like", "maybe", "prefer-not", "off-limit", null];
+<script>
+const form = document.getElementById('compareForm');
 
-    function getDistance(val1, val2) {
-      const idx1 = order.indexOf(val1);
-      const idx2 = order.indexOf(val2);
-      return Math.abs(idx1 - idx2);
-    }
+const file1Input = document.getElementById('file1');
+const file2Input = document.getElementById('file2');
+const sameEl = document.getElementById('same');
+const diffEl = document.getElementById('diff');
+const notSetEl = document.getElementById('notSet');
+const person1Input = document.getElementById('person1');
+const person2Input = document.getElementById('person2');
 
-    function bucketLevel(distance) {
-      if (distance === 1) return "low";
-      if (distance === 2 || distance === 3) return "medium";
-      return "high"; // 4 or 5
-    }
+const order = ["must", "like", "maybe", "prefer-not", "off-limit", null];
 
-    function readFile(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = e => resolve(JSON.parse(e.target.result));
-        reader.onerror = reject;
-        reader.readAsText(file);
-      });
-    }
+function getDistance(val1, val2) {
+  return Math.abs(order.indexOf(val1) - order.indexOf(val2));
+}
 
-    function renderGroup(container, groupName, items, type, person1, person2) {
-      const groupDiv = document.createElement('div');
-      groupDiv.className = 'group';
+function bucketLevel(distance) {
+  if (distance === 1) return "low";
+  if (distance === 2 || distance === 3) return "medium";
+  return "high";
+}
 
-      const headerDiv = document.createElement('div');
-      headerDiv.className = 'group-header';
-      headerDiv.textContent = groupName + ` (${items.length} item${items.length > 1 ? 's' : ''})`;
-      groupDiv.appendChild(headerDiv);
+function readFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => resolve(JSON.parse(e.target.result));
+    reader.onerror = reject;
+    reader.readAsText(file);
+  });
+}
 
-      const itemsContainer = document.createElement('div');
-      itemsContainer.className = 'items-container';
+function renderGroup(container, groupName, items, type, person1, person2) {
 
-      const headerRow = document.createElement('div');
-      headerRow.className = 'header-row';
-      headerRow.innerHTML = `
-        <div class="value">Item</div>
-        <div class="value">${person1}</div>
-        <div class="value">${person2}</div>
-        <div class="value">Notes</div>
-      `;
-      itemsContainer.appendChild(headerRow);
+  const details = document.createElement('details');
+  details.open = false;
 
-      items.forEach(({ name, icon1, icon2, note1, note2 }) => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = `item ${type}`;
-        const notesHTML = `
-          ${note1 ? `<div class="note">${person1}: ${note1}</div>` : `<div></div>`}
-          ${note2 ? `<div class="note">${person2}: ${note2}</div>` : `<div></div>`}
-        `;
-        itemDiv.innerHTML = `
-          <div class="value"><strong>${name}</strong></div>
-          <div class="value">${icon1 ?? ''}</div>
-          <div class="value">${icon2 ?? ''}</div>
-          <div class="value" style="display:flex;gap:0.5rem;">${notesHTML}</div>
-        `;
-        itemsContainer.appendChild(itemDiv);
-      });
+  const summary = document.createElement('summary');
+  summary.textContent = `${groupName} (${items.length} item${items.length > 1 ? 's' : ''})`;
+  details.appendChild(summary);
 
-      groupDiv.appendChild(itemsContainer);
-      container.appendChild(groupDiv);
+  const table = document.createElement('table');
 
-      // Toggle collapse on header click
-      headerDiv.addEventListener('click', () => {
-        itemsContainer.style.display = itemsContainer.style.display === 'none' ? 'block' : 'none';
-      });
-    }
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th scope="col">Item</th>
+        <th scope="col">${person1}</th>
+        <th scope="col">${person2}</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  `;
 
-    document.getElementById('compareBtn').addEventListener('click', async () => {
-      if (!file1Input.files[0] || !file2Input.files[0]) {
-        alert("Please select both files first.");
-        return;
-      }
+  const tbody = table.querySelector('tbody');
 
-      const person1 = person1Input.value.trim() || "Person 1";
-      const person2 = person2Input.value.trim() || "Person 2";
+  const iconMap = {
+    "must": "Must",
+    "like": "Like",
+    "maybe": "Maybe",
+    "prefer-not": "Prefer not",
+    "off-limit": "Off limits"
+  };
 
-      const [json1, json2] = await Promise.all([
-        readFile(file1Input.files[0]),
-        readFile(file2Input.files[0])
-      ]);
+  items.forEach(({ name, icon1, icon2, note1, note2 }) => {
 
-      sameEl.innerHTML = '';
-      diffEl.innerHTML = '';
-      notSetEl.innerHTML = '';
+    const tr = document.createElement('tr');
+    tr.className = type;
 
-      const menu1 = json1.menu || [];
-      const menu2 = json2.menu || [];
+    tr.innerHTML = `
+      <th scope="row"><h3>${name}</h3></th>
+      <td>
+        <strong>${person1}</strong><br>
+        ${iconMap[icon1] ?? ""}
+        ${note1 ? `<blockquote class="note">${note1[0]?.text ?? ""}</blockquote>` : ""}
+      </td>
+      <td>
+        <strong>${person2}</strong><br>
+        ${iconMap[icon2] ?? ""}
+        ${note2 ? `<blockquote class="note">${note2[0]?.text ?? ""}</blockquote>` : ""}
+      </td>
+    `;
 
-      const diffBuckets = { low: {}, medium: {}, high: {} };
-      const missingBuckets = {};
+    tbody.appendChild(tr);
+  });
 
-      menu1.forEach(group1 => {
-        const group2 = menu2.find(g => g.name === group1.name);
-        if (!group2) return;
+  details.appendChild(table);
+  container.appendChild(details);
+}
 
-        const sameItems = [];
-        const missingItems = [];
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-        group1.items.forEach(item1 => {
-          const item2 = group2.items.find(i => i.name === item1.name);
-          const note1 = item1.note;
-          const note2 = item2?.note;
+  if (!file1Input.files[0] || !file2Input.files[0]) {
+    alert("Please select both files first.");
+    return;
+  }
 
-          if (item2) {
-            if (item1.icon === item2.icon) {
-              sameItems.push({ name: item1.name, icon1: item1.icon, icon2: item2.icon, note1, note2 });
-            } else if (item1.icon == null || item2.icon == null) {
-              missingItems.push({ name: item1.name, icon1: item1.icon, icon2: item2.icon, note1, note2 });
-            } else {
-              const distance = getDistance(item1.icon, item2.icon);
-              const bucket = bucketLevel(distance);
-              if (!diffBuckets[bucket][group1.name]) diffBuckets[bucket][group1.name] = [];
-              diffBuckets[bucket][group1.name].push({ name: item1.name, icon1: item1.icon, icon2: item2.icon, note1, note2 });
-            }
-          } else {
-            missingItems.push({ name: item1.name, icon1: item1.icon, icon2: null, note1, note2 });
-          }
-        });
+  const person1 = person1Input.value.trim() || "Person 1";
+  const person2 = person2Input.value.trim() || "Person 2";
 
-        if (sameItems.length) renderGroup(sameEl, group1.name, sameItems, 'same', person1, person2);
-        if (missingItems.length) renderGroup(notSetEl, group1.name, missingItems, 'medium', person1, person2);
-      });
+  const [json1, json2] = await Promise.all([
+    readFile(file1Input.files[0]),
+    readFile(file2Input.files[0])
+  ]);
 
-      ["low", "medium", "high"].forEach(level => {
-        const groups = diffBuckets[level];
-        if (Object.keys(groups).length > 0) {
-          const header = document.createElement('h3');
-          header.textContent = level.charAt(0).toUpperCase() + level.slice(1) + " Difference";
-          diffEl.appendChild(header);
+  sameEl.innerHTML = '';
+  diffEl.innerHTML = '';
+  notSetEl.innerHTML = '';
 
-          Object.keys(groups).forEach(groupName => {
-            renderGroup(diffEl, groupName, groups[groupName], level, person1, person2);
-          });
+  const menu1 = json1.menu || [];
+  const menu2 = json2.menu || [];
+
+  const diffBuckets = { low: {}, medium: {}, high: {} };
+
+  menu1.forEach(group1 => {
+    const group2 = menu2.find(g => g.name === group1.name);
+    if (!group2) return;
+
+    const sameItems = [];
+    const missingItems = [];
+
+    group1.items.forEach(item1 => {
+      const item2 = group2.items.find(i => i.name === item1.name);
+      const note1 = item1.note;
+      const note2 = item2?.note;
+
+      if (item2) {
+        if (item1.icon === item2.icon) {
+          sameItems.push({ name: item1.name, icon1: item1.icon, icon2: item2.icon, note1, note2 });
+        } else if (item1.icon == null || item2.icon == null) {
+          missingItems.push({ name: item1.name, icon1: item1.icon, icon2: item2.icon, note1, note2 });
+        } else {
+          const distance = getDistance(item1.icon, item2.icon);
+          const bucket = bucketLevel(distance);
+          if (!diffBuckets[bucket][group1.name]) diffBuckets[bucket][group1.name] = [];
+          diffBuckets[bucket][group1.name].push({ name: item1.name, icon1: item1.icon, icon2: item2.icon, note1, note2 });
         }
-      });
+      } else {
+        missingItems.push({ name: item1.name, icon1: item1.icon, icon2: null, note1, note2 });
+      }
     });
-  </script>
+
+    if (sameItems.length) renderGroup(sameEl, group1.name, sameItems, 'same', person1, person2);
+    if (missingItems.length) renderGroup(notSetEl, group1.name, missingItems, null, person1, person2);
+  });
+
+  ["low", "medium", "high"].forEach(level => {
+    const groups = diffBuckets[level];
+    if (Object.keys(groups).length > 0) {
+      const header = document.createElement('h3');
+      header.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Difference`;
+      diffEl.appendChild(header);
+
+      Object.keys(groups).forEach(groupName => {
+        renderGroup(diffEl, groupName, groups[groupName], level, person1, person2);
+      });
+    }
+  });
+
+});
+
+const button = document.getElementById("toggleDetails");
+let expanded = false;
+
+button.addEventListener("click", () => {
+  const allDetails = document.querySelectorAll("details");
+
+  expanded = !expanded;
+
+  allDetails.forEach(d => {
+    d.open = expanded;
+  });
+
+  button.textContent = expanded ? "Collapse All" : "Expand All";
+});
+</script>
+
 </body>
 </html>
