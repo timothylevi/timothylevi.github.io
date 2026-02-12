@@ -275,7 +275,7 @@ table td {
   border-radius: 6px;
 
   color: var(--text-muted);
-  display: inline-block;
+  display: block;
   margin: 0.5rem 0;
 }
 
@@ -416,7 +416,7 @@ const notSetEl = document.getElementById('notSet');
 const person1Input = document.getElementById('person1');
 const person2Input = document.getElementById('person2');
 
-const order = ["must", "like", "maybe", "prefer-not", "off-limit", null];
+const order = ["must", "like", "maybe", "prefer-not", "off-limit", "talk", null];
 
 function getDistance(val1, val2) {
   return Math.abs(order.indexOf(val1) - order.indexOf(val2));
@@ -466,7 +466,8 @@ function renderGroup(container, groupName, items, type, person1, person2) {
     "like": "Like",
     "maybe": "Maybe",
     "prefer-not": "Prefer not",
-    "off-limit": "Off limits"
+    "off-limit": "Off limits",
+    "talk": "Talk"
   };
 
   items.forEach(({ name, icon1, icon2, note1, note2 }) => {
@@ -478,12 +479,12 @@ function renderGroup(container, groupName, items, type, person1, person2) {
       <th scope="row"><h3>${name}</h3></th>
       <td>
         <strong>${person1}</strong><br>
-        ${iconMap[icon1] ?? ""}
+        ${iconMap[icon1] ?? icon1}
         ${note1 ? `<blockquote class="note">${note1[0]?.text ?? ""}</blockquote>` : ""}
       </td>
       <td>
         <strong>${person2}</strong><br>
-        ${iconMap[icon2] ?? ""}
+        ${iconMap[icon2] ?? icon2}
         ${note2 ? `<blockquote class="note">${note2[0]?.text ?? ""}</blockquote>` : ""}
       </td>
     `;
